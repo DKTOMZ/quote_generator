@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { setQuotes } from "./quotesSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { useTransition } from 'react-transition-state';
@@ -6,6 +6,7 @@ import TwitterIcon from '../../assets/twitter.svg';
 
 const Quotes = () => {
     const quotes = useSelector(state => state.quotes);
+    const heading = useRef();
     const text = useRef();
     const author = useRef();
     const quoteBox = useRef();
@@ -25,10 +26,6 @@ const Quotes = () => {
         initialEntered: true  
     });
 
-    useEffect(()=>{
-        animate(true);
-    },[]);
-
     const removeQuote = () => {
         animate();
         setColorIndex(createColorIndex);
@@ -43,6 +40,14 @@ const Quotes = () => {
         }
     }
 
+    const handleErrors= (status) => {
+        heading.current.innerHTML = status;
+    };
+
+    const clearErrors= (status = '') => {
+        heading.current.innerHTML = 'Random quote generator';
+    };
+
     const dispatch = useDispatch();
 
     const fetchQuotes = async() => {
@@ -54,19 +59,22 @@ const Quotes = () => {
                 data = await response.json();
             }
         } catch (error) {
-            console.log(error);
+            handleErrors('Please check your network');
         }
+        clearErrors();
         dispatch(setQuotes(data));
     }
 
-    if (quotes.length < 1) {fetchQuotes();}
+    if (quotes.length < 1) {
+        fetchQuotes();
+    }
     
     return (
         <div ref={quoteBox} id="quote-box">
-            <h1>Random quote generator</h1>
-            {isMounted && (
+            <h1 ref={heading}>Random quote generator</h1>
+            {isMounted && quotes.length > 0 && (
                 <>
-                    <div ref={text} className={`animate ${status}`} id="text">{quotes[randomIndex].text}</div>
+                    <div ref={text} className={`animate ${status}`} id="text">{ quotes[randomIndex].text}</div>
                     <div ref={author} className={`animate ${status}`} id="author">{quotes[randomIndex].author ? quotes[randomIndex].author: 'Anonymous'}</div>
                     <div id="tweet_newquote">
                         <div ref={tweetButton} id="tweet-box">
