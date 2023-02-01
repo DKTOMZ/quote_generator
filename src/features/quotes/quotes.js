@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { setQuotes } from "./quotesSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { useTransition } from 'react-transition-state';
-import TwitterIcon from '../../assets/twitter.svg';
+import TwitterIcon from '../../assets/ticon.svg';
 
 const Quotes = () => {
     const quotes = useSelector(state => state.quotes);

@@ -64,6 +64,7 @@ body{
                 justify-content: center;
                 align-items: center;
                 float: left;
+                cursor: pointer;
                 img{height: 25px; width: 25px;}
             }
             #new-quote {
@@ -78,7 +79,7 @@ body{
     }
 }
 
-@media screen and (max-width: 539px) {
+@media screen and (max-width: 600px) {
     #quote-box {
         width: 80% !important;
         margin-left: auto;
